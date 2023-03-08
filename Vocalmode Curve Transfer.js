@@ -4,68 +4,70 @@ function getClientInfo() {
     "name": SV.T("Vocalmode Curve Transfer"),
 	"category" : "BeeSV",
     "author": "TiredBee",
-    "versionNumber": 1,
+    "versionNumber": 2,
     "minEditorVersion": 0
   };
 }
 
 const vocalModeTable =[
-	"Chest",
-	"Airy",
-	"Open",
-	"Soft",
-	"Kawaii",
-	"Pops",
-	"Emotional",
-	"Ballade",
 	"Adult",
-	"Breathy",
-	"Power_Pop",
-	"Twangy",
-	"Whisper",
+	"Airy",
 	"Attacky",
-	"Crispy",
-	"Power",
-	"Sweet",
-	"Emotive",
-	"Charm",
-	"Chill",
-	"Light",
-	"Clear",
-	"Passionate",
-	"Solid",
-	"Bright",
-	"Straight",
-	"Tight",
-	"Nasal",
-	"Resonant",
+	"Ballade",
 	"Belt",
+	"Bold",
+	"Breathy",
+	"Bright",
+	"Charm",
+	"Chest",
+	"Chill",
+	"Clear",
+	"Closed",
 	"Cool",
+	"Crispy",
 	"Dark",
-	"Emotional",
-	"Happy",
-	"Falsetto",
-	"Opera",
 	"Delicate",
-	"Tender",
-	"Lucid",
+	"Emotional",
+	"Emotional",
+	"Emotive",
+	"Falsetto",
 	"Firm",
-	"Powerful",
-	"Warm",
 	"Gentle",
+	"Happy",
+	"Kawaii",
+	"Light",
+	"Lucid",
+	"Melancholic",
+	"Muted",
+	"Nasal",
+	"Open",
+	"Opera",
+	"Overdrive",
+	"Passionate",
+	"Piano_Ballade",
+	"Pops",
+	"Power",
+	"Power_Pop",
+	"Powerful",
+	"Resonant",
+	"Rock",
+	"Rough",
+	"Soft",
+	"Solid",
+	"Soul",
 	"Soulful",
 	"Steady",
-	"Bold",
-	"Rock",
-	"Piano_Ballade",
+	"Straight",
 	"Strained",
-	"Rough",
-	"Closed",
+	"Sweet",
+	"Tender",
 	"Theatrical",
+	"Tight",
+	"Tsubaki",
+	"Twangy",
 	"Vivid",
-	"Melancholic",
-	"Overdrive",
-	"Muted"
+	"Warm",
+	"Whisper"
 ]
 
 function main() {
@@ -76,18 +78,13 @@ function main() {
 		"widgets" : [
 			{
 				"name" : "OGCB", "type" : "ComboBox",
-				"label" : "OG Vocalmode name",
+				"label" : "Source Vocalmode name",
 				"choices" : vocalModeTable,
 				"default" : 0
 			},
 			{
-				"name" : "IsManualOG", "type" : "CheckBox",
-				"text" : "Use Manual Input",
-				"default" : false
-			},
-			{
 				"name" : "OG", "type" : "TextBox",
-				"label" : "Input here",
+				"label" : "Manual input",
 				"default" : ""
 			},
 			{
@@ -97,18 +94,18 @@ function main() {
 				"default" : 0
 			},
 			{
-				"name" : "IsManualTG", "type" : "CheckBox",
-				"text" : "Use Manual Input",
-				"default" : false
-			},
-			{
 				"name" : "TG", "type" : "TextBox",
-				"label" : "Input here",
+				"label" : "Manual input",
 				"default" : ""
 			},
 			{
 				"name" : "DeleteOG", "type" : "CheckBox",
-				"text" : "Delete OG Automation","height" : 100,
+				"text" : "Delete Source Automation",
+				"default" : false
+			},
+			{
+				"name" : "DeleteTG", "type" : "CheckBox",
+				"text" : "Clear Tagret Automation",
 				"default" : false
 			}
 			]
@@ -120,11 +117,13 @@ function main() {
 	{
 		var scope = SV.getMainEditor().getCurrentGroup()
     	var noteGroup = scope.getTarget()
-		if(result.answers.IsManualOG){var OGAutomation = noteGroup.getParameter("vocalMode_"+result.answers.OG)}
+		if(result.answers.OG != ""){var OGAutomation = noteGroup.getParameter("vocalMode_"+result.answers.OG)}
 		else{var OGAutomation = noteGroup.getParameter("vocalMode_"+vocalModeTable[result.answers.OGCB])}
-		if(result.answers.IsManualTG){var TGAutomation = noteGroup.getParameter("vocalMode_"+result.answers.TG)}
+		if(result.answers.TG != ""){var TGAutomation = noteGroup.getParameter("vocalMode_"+result.answers.TG)}
 		else{var TGAutomation = noteGroup.getParameter("vocalMode_"+vocalModeTable[result.answers.TGCB])}
-			
+		if(result.answers.DeleteTG){
+			TGAutomation.removeAll()
+		}
 		var points = OGAutomation.getAllPoints()
 		for (var currentPoint = 0; currentPoint < points.length; currentPoint++)
 		{
