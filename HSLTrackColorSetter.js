@@ -1,6 +1,6 @@
 function getClientInfo() {
   return {
-    "name": SV.T("Ultra Track Color Setter"),
+    "name": SV.T("HSL Track Color Setter"),
 	"category" : "BeeSV",
     "author": "TiredBee",
     "versionNumber": 1,
