@@ -28,16 +28,9 @@ function main()
       -e 'do shell script "echo " & quoted form of hexColor & " | pbcopy"' ]]
     os.execute(command)
   elseif osType == 'Windows' then
-    local ps = [[Add-Type -AssemblyName System.Windows.Forms; $cd=New-Object System.Windows.Forms.ColorDialog; $cd.Color=[System.Drawing.Color]::FromArgb(255,128,0); if($cd.ShowDialog() -eq 'OK'){ $c=$cd.Color; $h='ff{0:X2}{1:X2}{2:X2}' -f $c.R,$c.G,$c.B; Set-Clipboard -Value $h }]]
-    local escaped = ps:gsub('"', '""')
-    local vbs = 'Set shell = CreateObject("WScript.Shell")\n' ..
-                'shell.Run "powershell -nologo -noprofile -command \""' .. escaped .. '\""", 0, False\n'
-    local vbsPath = os.getenv("TEMP") .. "\\temp_colorpicker.vbs"
-    local f = io.open(vbsPath, "w")
-    f:write(vbs)
-    f:close()
-    os.execute('wscript "' .. vbsPath .. '"')
-    os.remove(vbsPath)
+    local psCommand = [[Add-Type -AssemblyName System.Windows.Forms; $cd=New-Object System.Windows.Forms.ColorDialog; $cd.Color=[System.Drawing.Color]::FromArgb(255,128,0); if($cd.ShowDialog() -eq 'OK'){ $c=$cd.Color; $h='ff{0:X2}{1:X2}{2:X2}' -f $c.R,$c.G,$c.B; Set-Clipboard -Value $h }]]
+    local command = 'powershell -WindowStyle Hidden -Command "' .. psCommand .. '"'
+    os.execute(command)
   else
     SV:showMessageBox("Error", "Unsupported OS. Please use macOS or Windows.")
   end
