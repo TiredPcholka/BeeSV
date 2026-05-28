@@ -30,7 +30,7 @@ function makePlaybackFollower(coordSystem) {
 	var timeAxis = SV.getProject().getTimeAxis();
 	
 	return function() {
-	var position = timeAxis.getBlickFromSeconds(playback.getPlayhead())
+	var position = timeAxis.getBlickFromSeconds(playback.getPlayhead());
 	var viewRange = coordSystem.getTimeViewRange();
 	
 	// Change the value below to change the playhead position while playing
